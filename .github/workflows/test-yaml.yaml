@@ -19,3 +19,4 @@ jobs:
       run: |
         pip install pyyaml
         python -c "import yaml, pathlib, sys; [yaml.safe_load(f.read_text()) for f in pathlib.Path('pipelines').glob('*.yml')] or print('✅ All YAMLs valid!')"
+# CI trigger
