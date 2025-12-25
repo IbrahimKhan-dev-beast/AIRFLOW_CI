@@ -1,0 +1,24 @@
+name: Test YAML Syntax
+
+on:
+  push:
+    branches: [ feature/github_actions ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    - name: Install and test
+      run: |
+        pip install poetry pyyaml pytest
+        python -c "
+import yaml, pathlib, sys
+for f in pathlib.Path('pipelines').glob('*.yml'):
+    try: yaml.safe_load(f.read_text())
+    except Exception as e: print(f'❌ {f}: {e}'); sys.exit(1)
+print('✅ All YAMLs valid!')
+"
