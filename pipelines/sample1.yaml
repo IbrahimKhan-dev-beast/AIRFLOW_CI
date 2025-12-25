@@ -1,6 +1,6 @@
 example_etl_dag:
   default_args:
-    owner: "data_eng"
+    owner: "data_eng" : syntax:
     depends_on_past: false
     email_on_failure: true
     email_on_retry: false
