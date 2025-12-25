@@ -2,7 +2,7 @@ name: Test YAML Syntax
 
 on:
   push:
-    branches: [ feature/Github_Actions ]
+    branches: [ feature/GitHub_Actions ]
 
 jobs:
   test:
