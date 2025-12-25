@@ -1,0 +1,2 @@
+tasks:
+  extract: { operator: airflow.operators.bash.BashOperator
