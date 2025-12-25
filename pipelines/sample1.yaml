@@ -1,57 +1,15 @@
-example_etl_dag:
+etl_dag:
   default_args:
-    owner: "data_eng"
-    depends_on_past: false
-    email_on_failure: true
-    email_on_retry: false
-    retries: 1
-    retry_delay_sec: 300        # 5 minutes
-    # You can also use Airflow's timedelta in Python default_args file if you prefer
-    start_date: "2024-12-01"    # ISO string is supported
-  schedule_interval: "0 2 * * *" # daily at 02:00
-  description: "Example ETL DAG created via dag-factory YAML"
-  catchup: false
-  max_active_runs: 1
-  concurrency: 8
-  tags:
-    - "example"
-    - "etl"
-    - "yaml"
-
-  # Optional: callbacks by import path
-  on_failure_callback_name: "dag_failure_callback"
-  on_failure_callback_file: "/usr/local/airflow/dags/callbacks.py"
-
-  # DAG-level params (Airflow 2 params)
-  params:
-    env: "prod"
-    source: "s3"
-
+    owner: data_eng
+    start_date: '2025-01-01'
+  schedule_interval: '@daily'
   tasks:
-    start:
-      operator: airflow.operators.empty.EmptyOperator
-
     extract:
-      operator: airflow.operators.bash.BashOperator
-      bash_command: "echo 'extracting data from {{ params.source }} in {{ params.env }}'"
-
-    transform:
-      operator: airflow.operators.python.PythonOperator
-      python_callable_name: "transform_data"
-      python_callable_file: "/usr/local/airflow/dags/etl_tasks.py"
-      op_kwargs:
-        mode: "full"
-
+      operator: BashOperator
+      bash_command: 'echo extracting'
     load:
-      operator: airflow.operators.bash.BashOperator
-      bash_command: "echo 'loading data to warehouse'"
-
-    end:
-      operator: airflow.operators.empty.EmptyOperator
-
-  # Declare dependencies in terms of task ids defined above
+      operator: BashOperator
+      bash_command: 'echo loading'
   dependencies:
-    start: [extract]
-    extract: [transform]
-    transform: [load]
-    load: [end]
+    - extract
+    - load
